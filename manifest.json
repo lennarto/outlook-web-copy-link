@@ -1,0 +1,26 @@
+{
+  "action": {
+     "default_icon": "128.png",
+     "default_popup": "popup.html"
+  },
+  "content_security_policy": {
+     "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "description": "",
+  "icons": {
+     "128": "128.png"
+  },
+  "manifest_version": 3,
+  "minimum_chrome_version": "89",
+  "name": "Sorter 3",
+  "permissions": [ "tabs", "tabGroups", "storage", "scripting", "https://*/", "<all_urls>" ],
+  "host_permissions": [
+    "*://*.atlassian.net/*"
+  ],
+  "update_url": "https://clients2.google.com/service/update2/crx",
+  "version": "0.0.4",
+  "web_accessible_resources": [ {
+     "matches": [  ],
+     "resources": [ "icon-128.png", "icon-48.png", "icon-16.png" ]
+  } ]
+}
