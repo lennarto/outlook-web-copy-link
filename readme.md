@@ -1,6 +1,6 @@
 <div align="center">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="images/logo_dark.svg" width="300">
+  <source media="(prefers-color-scheme: dark)" srcset="images/logo_dark.svg" width="300" border="1px solid red">
   <source media="(prefers-color-scheme: light)" srcset="images/logo_light.svg" width="300">
   <img alt="Fallback image description" src="images/logo_light.svg" width="300">
 </picture>
