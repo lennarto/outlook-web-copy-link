@@ -2,20 +2,26 @@
    "manifest_version": 3,
    "name": "Outlook Web Copy Link",
    "version": "1.0",
-   "description": "Adds a button in Outlook Web to copy the current email URL with a modified format.",
-   "permissions": ["clipboardWrite"],
+   "description": "Adds a copy link button to Outlook Web.",
+   "permissions": [
+     "scripting",
+     "tabs",
+     "activeTab"
+   ],
    "host_permissions": [
-     "https://outlook.office.com/*",
-     "https://outlook.live.com/*",
-     "https://outlook.*"
+     "*://*/"
    ],
-   "content_scripts": [
-      {
-         "matches": ["https://outlook.live.com/*"],
-         "js": ["contentScript.js"],
-         "run_at": "document_idle"
-       }
-   ],
+   "background": {
+     "service_worker": "background.js"
+   },
+   "action": {
+  "default_icon": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  },
+  "default_popup": "popup.html"
+},
    "icons": {
      "16": "images/icon16.png",
      "48": "images/icon48.png",

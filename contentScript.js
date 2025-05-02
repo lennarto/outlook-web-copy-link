@@ -41,7 +41,7 @@ function injectCopyButton() {
       button.id = "outlook-copy-button";
       button.textContent = "🔗 Copy url";
       button.style.marginLeft = "8px";
-      button.style.padding = "4px 10px";
+      button.style.padding = "2px 10px";
       button.style.borderRadius = "6px";
       button.style.background = "#e0ffe0";
       button.style.border = "1px solid #ccc";
