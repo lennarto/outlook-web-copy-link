@@ -2,7 +2,7 @@ function copyModifiedUrl() {
   const currentUrl = window.location.href;
   const modifiedUrl = currentUrl.replace("/inbox/id/", "/deeplink/readconv/");
   navigator.clipboard.writeText(modifiedUrl)
-    .then(() => showNotification("✅ Link kopiert"))
+    .then(() => showNotification("✅ Url copied"))
     .catch(err => showNotification("❌ Kopieren fehlgeschlagen"));
 }
 
@@ -28,34 +28,33 @@ function showNotification(text) {
 }
 
 function injectCopyButton() {
-  if (document.getElementById("outlook-copy-button")) return;
+  const interval = setInterval(() => {
+    const actionBar = document.querySelector('div[role="toolbar"]') || document.querySelector('div[aria-label*="Befehlsleiste"]');
+    const existingButton = document.getElementById("outlook-copy-button");
 
-  // Versuche einen Bereich mit E-Mail-Header zu finden (angepasst)
-  const actionBar = document.querySelector('div[role="toolbar"]') || document.querySelector('div[aria-label*="Befehlsleiste"]');
+    if (actionBar && actionBar.offsetHeight > 0 && !existingButton) {
+      clearInterval(interval);
 
-  if (!actionBar) {
-    console.log("⚠️ Kein passender Toolbar-Bereich gefunden.");
-    return;
-  }
+      console.log("✅ Toolbar gefunden, Button wird hinzugefügt");
 
-  console.log("✅ Toolbar gefunden, Button wird hinzugefügt");
+      const button = document.createElement("button");
+      button.id = "outlook-copy-button";
+      button.textContent = "🔗 Copy url";
+      button.style.marginLeft = "8px";
+      button.style.padding = "4px 10px";
+      button.style.borderRadius = "6px";
+      button.style.background = "#e0ffe0";
+      button.style.border = "1px solid #ccc";
+      button.style.cursor = "pointer";
+      button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        copyModifiedUrl();
+      });
 
-  const button = document.createElement("button");
-  button.id = "outlook-copy-button";
-  button.textContent = "🔗 Copy url";
-  button.style.marginLeft = "8px";
-  button.style.padding = "4px 10px";
-  button.style.borderRadius = "6px";
-  button.style.background = "#e0ffe0";
-  button.style.border = "1px solid #ccc";
-  button.style.cursor = "pointer";
-  button.addEventListener("click", (event) => {
-    event.stopPropagation();
-    event.preventDefault();
-    copyModifiedUrl();
-  });
-
-  actionBar.insertBefore(button, actionBar.firstChild);
+      actionBar.insertBefore(button, actionBar.firstChild);
+    }
+  }, 300);
 }
 
 // DOM beobachten und regelmäßig versuchen, den Button zu injizieren
