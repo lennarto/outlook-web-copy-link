@@ -1,6 +1,6 @@
 <div align="center">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="images/logo_dark.svg" width="300" border="1px solid red">
+  <source media="(prefers-color-scheme: dark)" srcset="images/logo_dark.svg" width="300">
   <source media="(prefers-color-scheme: light)" srcset="images/logo_light.svg" width="300">
   <img alt="Fallback image description" src="images/logo_light.svg" width="300">
 </picture>
@@ -12,8 +12,12 @@
 
 <img src="images/demo.png" alt="Usage demo">
 
-## 🚀 Installation 
-todo
+## 🚀 Installation via Chrome Web Store
+
+<a href="https://chromewebstore.google.com/detail/outlook-web-copy-link/apfgdjfahgmocjbiiackcfhilgpcjgoe?hl=de&authuser=1">
+  <img src="images/chrome_web_store.png" alt="Install from Chrome Web Store" width="260"/>
+</a>
+
 
 ## 🔥 Usage 
 

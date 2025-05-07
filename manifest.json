@@ -2,7 +2,7 @@
    "manifest_version": 3,
    "name": "Outlook Web Copy Link",
    "version": "1.0",
-   "description": "Adds a copy link button to Outlook Web.",
+   "description": "Addon lets you copy Outlook Web URLs to specific Mails",
    "permissions": [
      "scripting",
      "tabs",
