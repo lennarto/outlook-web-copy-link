@@ -31,7 +31,7 @@ If you click on it, it will create a unique url / link to this specific email. *
 
 ## 💙 Support 
 
-#### 🤝  Found a bug? Missing a specific feature?
+#### 🐞  Found a bug? Missing a specific feature?
 Feel free to file a new <a href="https://github.com/lennarto/outlook-web-copy-link/issues" target="_blank">Issue</a>.
 
 #### 🤝 Contact me
