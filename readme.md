@@ -17,6 +17,7 @@
 <a href="https://chromewebstore.google.com/detail/outlook-web-copy-link/apfgdjfahgmocjbiiackcfhilgpcjgoe">
   <img src="images/chrome_web_store.png" alt="Install from Chrome Web Store" width="210"/>
 </a>
+
 - Option 1: Install directly from the [Chrome Web Store](https://chromewebstore.google.com/detail/outlook-web-copy-link/apfgdjfahgmocjbiiackcfhilgpcjgoe)
 - Option 2: Download this repository and load it as an unpacked extension in Chrome.
 
