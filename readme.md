@@ -38,6 +38,4 @@ I love building digital products, working in it-strategy, or applying ai in real
 ##### 🍻 Buy me a beer 
 
 If you’ve found something useful, feel free to fuel my next project with a Beer! 🍻 I do have a couple of cool ideas in my backlog 🚀
-
-## 📙 License
-"reopen-existing-tab" is released under the terms of the [MIT License](LICENSE).
+👉 [My Paypal](https://www.paypal.com/paypalme/ltoertzen) 👈
