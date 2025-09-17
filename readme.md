@@ -14,10 +14,11 @@
 
 ## 🚀 Installation via Chrome Web Store
 
-<a href="https://chromewebstore.google.com/detail/outlook-web-copy-link/apfgdjfahgmocjbiiackcfhilgpcjgoe?hl=de&authuser=1">
-  <img src="images/chrome_web_store.png" alt="Install from Chrome Web Store" width="260"/>
+<a href="https://chromewebstore.google.com/detail/outlook-web-copy-link/apfgdjfahgmocjbiiackcfhilgpcjgoe">
+  <img src="images/chrome_web_store.png" alt="Install from Chrome Web Store" width="210"/>
 </a>
-
+- Option 1: Install directly from the [Chrome Web Store](https://chromewebstore.google.com/detail/outlook-web-copy-link/apfgdjfahgmocjbiiackcfhilgpcjgoe)
+- Option 2: Download this repository and load it as an unpacked extension in Chrome.
 
 ## 🔥 Usage 
 
@@ -25,17 +26,19 @@ This addon will create a buttons in your Outlook web app.
 
 If you click on it, it will create a unique url / link to this specific email. **The email can only be accessed by you !!**
 
-## 🤝  Found a bug? Missing a specific feature?
-Feel free to file a new <a href="https://github.com/lennarto/outlook-web-copy-link/issues" target="_blank">Issue</a>.
-
+*(Both App and Web work on iOS and Macbook. Not tested on Windows or Android yet).*
 
 ## 💙 Support 
-##### 🤝 Contact me
+
+#### 🤝  Found a bug? Missing a specific feature?
+Feel free to file a new <a href="https://github.com/lennarto/outlook-web-copy-link/issues" target="_blank">Issue</a>.
+
+#### 🤝 Contact me
 I love building digital products, working in it-strategy, or applying ai in real-world use cases. On top of that, i create private it expert reports (🇩🇪 IT-Gutachten) for legal proceedings in germany, especially in criminal cases.
 👉 [My website](https://lennie.de) 👈
 
 
-##### 🍻 Buy me a beer 
+#### 🍻 Buy me a beer 
 
 If you’ve found something useful, feel free to fuel my next project with a Beer! 🍻 I do have a couple of cool ideas in my backlog 🚀
 👉 [My Paypal](https://www.paypal.com/paypalme/ltoertzen) 👈
