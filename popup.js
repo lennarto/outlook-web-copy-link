@@ -1,41 +1,85 @@
-function copyTextToClipboard(text) {
-  //Create a textbox field where we can insert text to. 
-  var copyFrom = document.createElement("textarea");
+function waitForElement(selector, root = document, timeoutMs = 5000) {
+  return new Promise((resolve) => {
+    const el = root.querySelector(selector);
+    if (el) return resolve(el);
 
-  let result = text.replace("/mail/id/", "/mail/deeplink/readconv/");
+    const observer = new MutationObserver(() => {
+      const found = root.querySelector(selector);
+      if (found) {
+        observer.disconnect();
+        resolve(found);
+      }
+    });
+    observer.observe(root, { childList: true, subtree: true });
 
-  //Set the text content to be the text you wished to copy.
-  copyFrom.textContent = result;
-
-  //Append the textbox field into the body as a child. 
-  //"execCommand()" only works when there exists selected text, and the text is inside 
-  //document.body (meaning the text is part of a valid rendered HTML element).
-  document.body.appendChild(copyFrom);
-
-  //Select all the text!
-  copyFrom.select();
-
-  //Execute command
-  document.execCommand('copy');
-
-  //(Optional) De-select the text using blur(). 
-  copyFrom.blur();
-
-  //Remove the textbox field from the document.body, so no other JavaScript nor 
-  //other elements can get access to this.
-  document.body.removeChild(copyFrom);
-
+    if (timeoutMs) {
+      setTimeout(() => {
+        observer.disconnect();
+        resolve(null);
+      }, timeoutMs);
+    }
+  });
 }
 
-chrome.tabs.query({
-  active: true,
-  currentWindow: true
-}, function(tabs) {
-  console.log('active tab', tabs);
-  var tabURL = tabs[0].url;
-  var xid = tabs[0].id;
-  console.log('active tab url', tabURL);
-  console.log('active tab id', xid);
-  console.log('active group id', tabs[0].groupId);
-  copyTextToClipboard(tabURL)
+async function injectCopyButton() {
+  if (!isOutlookMailView()) return;
+
+  // If already there, do nothing
+  if (document.getElementById("outlook-copy-button")) return;
+
+  // Wait for the toolbar to appear quickly without polling
+  const actionBar = await waitForElement('div[role="toolbar"], div[aria-label*="Befehlsleiste"]', document, 4000);
+  if (!actionBar) return; // give up silently if not found soon
+
+  const button = document.createElement("button");
+  button.id = "outlook-copy-button";
+  button.textContent = "🔗 Copy url";
+  Object.assign(button.style, {
+    marginLeft: "8px",
+    padding: "2px 10px",
+    borderRadius: "6px",
+    background: "#e0ffe0",
+    border: "1px solid #ccc",
+    cursor: "pointer",
+  });
+  button.addEventListener("click", (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    copyModifiedUrl();
+  });
+
+  actionBar.insertBefore(button, actionBar.firstChild);
+}
+
+function handleViewChange() {
+  if (isOutlookMailView()) {
+    injectCopyButton();
+  } else {
+    removeCopyButton();
+  }
+}
+
+// Listen to DOM mutations (fallback) with minimal work
+const domObserver = new MutationObserver(() => {
+  // Only react when the button is missing in mail view or present in non-mail views
+  const inMail = isOutlookMailView();
+  const hasBtn = !!document.getElementById("outlook-copy-button");
+  if ((inMail && !hasBtn) || (!inMail && hasBtn)) {
+    handleViewChange();
+  }
 });
+domObserver.observe(document.body, { childList: true, subtree: true });
+
+// Hook into SPA navigation for instant signals
+(function hookSpaNavigation(){
+  const push = history.pushState;
+  const replace = history.replaceState;
+  function fire(){ handleViewChange(); }
+  history.pushState = function(){ const r = push.apply(this, arguments); fire(); return r; };
+  history.replaceState = function(){ const r = replace.apply(this, arguments); fire(); return r; };
+  window.addEventListener('popstate', fire, true);
+  window.addEventListener('hashchange', fire, true);
+})();
+
+// Initial run
+handleViewChange();

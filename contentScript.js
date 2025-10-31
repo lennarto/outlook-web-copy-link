@@ -1,54 +1,76 @@
+function transformOutlookUrl(url) {
+  // support both variants seen in your codebase
+  return url
+    .replace("/inbox/id/", "/deeplink/readconv/")
+    .replace("/mail/id/", "/mail/deeplink/readconv/");
+}
+
 function copyModifiedUrl() {
-  const currentUrl = window.location.href;
-  const modifiedUrl = currentUrl.replace("/inbox/id/", "/deeplink/readconv/");
+  const modifiedUrl = transformOutlookUrl(window.location.href);
   navigator.clipboard.writeText(modifiedUrl)
     .then(() => showNotification("✅ Url copied"))
-    .catch(err => showNotification("❌ Kopieren fehlgeschlagen"));
+    .catch(() => showNotification("❌ Kopieren fehlgeschlagen"));
 }
 
 function showNotification(text) {
-  const oldNote = document.getElementById("outlook-copy-note");
-  if (oldNote) oldNote.remove();
+  const old = document.getElementById("outlook-copy-note");
+  if (old) old.remove();
 
   const note = document.createElement("div");
   note.id = "outlook-copy-note";
   note.textContent = text;
-  note.style.position = "fixed";
-  note.style.bottom = "20px";
-  note.style.left = "50%";
-  note.style.transform = "translateX(-50%)";
-  note.style.background = "#e0ffe0";
-  note.style.padding = "10px 20px";
-  note.style.borderRadius = "8px";
-  note.style.zIndex = 9999;
-  note.style.boxShadow = "0 2px 10px rgba(0,0,0,0.2)";
+  Object.assign(note.style, {
+    position: "fixed",
+    bottom: "20px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    background: "#e0ffe0",
+    padding: "10px 20px",
+    borderRadius: "8px",
+    zIndex: 9999,
+    boxShadow: "0 2px 10px rgba(0,0,0,.2)",
+  });
   document.body.appendChild(note);
-
   setTimeout(() => note.remove(), 3000);
 }
 
+// SPA guards: only show button in Mail view (not Calendar)
+function isOutlookMailView() {
+  const href = window.location.href;
+  return href.includes("/mail/") && !href.includes("/calendar/");
+}
+
+function removeCopyButton() {
+  const btn = document.getElementById("outlook-copy-button");
+  if (btn) btn.remove();
+}
+
 function injectCopyButton() {
+  if (!isOutlookMailView()) return;
+
   const interval = setInterval(() => {
-    const actionBar = document.querySelector('div[role="toolbar"]') || document.querySelector('div[aria-label*="Befehlsleiste"]');
-    const existingButton = document.getElementById("outlook-copy-button");
+    const actionBar =
+      document.querySelector('div[role="toolbar"]') ||
+      document.querySelector('div[aria-label*="Befehlsleiste"]');
+    const existing = document.getElementById("outlook-copy-button");
 
-    if (actionBar && actionBar.offsetHeight > 0 && !existingButton) {
+    if (actionBar && actionBar.offsetHeight > 0 && !existing) {
       clearInterval(interval);
-
-      console.log("✅ Toolbar gefunden, Button wird hinzugefügt");
 
       const button = document.createElement("button");
       button.id = "outlook-copy-button";
       button.textContent = "🔗 Copy url";
-      button.style.marginLeft = "8px";
-      button.style.padding = "2px 10px";
-      button.style.borderRadius = "6px";
-      button.style.background = "#e0ffe0";
-      button.style.border = "1px solid #ccc";
-      button.style.cursor = "pointer";
-      button.addEventListener("click", (event) => {
-        event.stopPropagation();
-        event.preventDefault();
+      Object.assign(button.style, {
+        marginLeft: "8px",
+        padding: "2px 10px",
+        borderRadius: "6px",
+        background: "#e0ffe0",
+        border: "1px solid #ccc",
+        cursor: "pointer",
+      });
+      button.addEventListener("click", (e) => {
+        e.stopPropagation();
+        e.preventDefault();
         copyModifiedUrl();
       });
 
@@ -57,13 +79,15 @@ function injectCopyButton() {
   }, 300);
 }
 
-// DOM beobachten und regelmäßig versuchen, den Button zu injizieren
 const observer = new MutationObserver(() => {
-  const actionBar = document.querySelector('div[role="toolbar"]') || document.querySelector('div[aria-label*="Befehlsleiste"]');
-  if (actionBar && !document.getElementById("outlook-copy-button")) {
-    injectCopyButton();
+  if (isOutlookMailView()) {
+    if (!document.getElementById("outlook-copy-button")) injectCopyButton();
+  } else {
+    removeCopyButton();
   }
 });
 observer.observe(document.body, { childList: true, subtree: true });
 
-console.log("📡 Outlook Copy Link ContentScript aktiv");
+if (isOutlookMailView()) injectCopyButton();
+
+console.log("📡 Outlook Copy Link ContentScript – SPA aware");
